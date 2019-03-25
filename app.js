@@ -18,11 +18,17 @@ const defaultState = {
 };
 
 function reducer(state, action) {
-  return state;
+  switch (action.type) {
+    case 'ADD_COURSE':
+      return Object.assign({}, state, {
+        courses: [...state.courses, action.course]
+      });
+    default:
+      return state;
+  }
 }
 
 const store = createStore(reducer, defaultState);
-
 
 function addView(viewFunc) {
   viewFunc(defaultState);
@@ -42,7 +48,11 @@ addView((state) => {
 
 store.dispatch({
   type: 'ADD_COURSE',
-  topic: 'New course on Redux & Angular'
+  course: {
+    name: "A new course in Redux!",
+    topic: 'New course on Redux & Angular'
+  }
+
 });
 
 
