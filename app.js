@@ -1,3 +1,5 @@
+const { createStore } = require('redux');
+
 const defaultState = {
   courses: [
     {
@@ -15,8 +17,18 @@ const defaultState = {
   ]
 };
 
+function reducer(state, action) {
+  return state;
+}
+
+const store = createStore(reducer, defaultState);
+
+
 function addView(viewFunc) {
   viewFunc(defaultState);
+  store.subscribe(()=> {
+    viewFunc(store.getState());
+  });
 }
 
 addView((state) => {
@@ -25,6 +37,12 @@ addView((state) => {
 
 addView((state) => {
   console.log(`The latest course in the library: ${state.courses[state.courses.length -1].name}`);
+});
+
+
+store.dispatch({
+  type: 'ADD_COURSE',
+  topic: 'New course on Redux & Angular'
 });
 
 
