@@ -3,30 +3,28 @@
 */
 
 // import redux
-const { createStore } = require('redux');
+const { createStore, applyMiddleware } = require('redux');
 
 // initialize state
 const defaultState = {
   courses: [
     {
       name: 'Learning React',
-      topic: 'React'
+      topic: 'React',
     },
     {
       name: 'Learning Angular',
-      topic: 'Angular'
+      topic: 'Angular',
     },
     {
       name: 'Using Redux with Angular',
-      topic: 'Angular'
+      topic: 'Angular',
     }
   ]
 };
 
-
 // Reducer calculates the updated state 
 function reducer(state, action) {
-
   switch (action.type) {
     case 'ADD_COURSE':
       return Object.assign({}, state, {
@@ -38,7 +36,14 @@ function reducer(state, action) {
   }
 }
 
-const store = createStore(reducer, defaultState);
+const logger = store => next => action => {
+  console.log('dispatching', action);
+  let result = next(action);
+  console.log('state after action', store.getState());
+  return result;
+}
+
+const store = createStore(reducer, defaultState, applyMiddleware(logger));
 
 function addView(viewFunc) {
   viewFunc(defaultState);
@@ -61,7 +66,15 @@ store.dispatch({
   type: 'ADD_COURSE',
   course: {
     name: 'A new course in Redux!',
-    topic: 'Redux'
+    topic: 'Redux',
+  }
+});
+
+store.dispatch({
+  type: 'ADD_COURSE',
+  course: {
+    name: 'Yet another course added',
+    topic: 'Redux, React, Angular',
   }
 });
 
