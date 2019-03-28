@@ -1,3 +1,8 @@
+/* Console app using Redux with Angular, course by hendrik swanepoel
+ on Pluralsight. Two thumbs up!  👍👍
+*/
+
+// 
 const { createStore } = require('redux');
 
 const defaultState = {
